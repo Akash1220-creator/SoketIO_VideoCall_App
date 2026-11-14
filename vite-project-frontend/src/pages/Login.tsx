@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { useAuth } from '../context/AuthContext'
 
 interface LoginProps {
   mode?: 'login' | 'register' | string
@@ -9,6 +10,7 @@ interface LoginProps {
 export const Login = ({ mode = 'login' }: LoginProps) => {
   const isRegister = mode === 'register'
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   const [formData, setFormData] = useState({
     name: '',
@@ -61,6 +63,11 @@ export const Login = ({ mode = 'login' }: LoginProps) => {
     // Simulate login/register process
     setTimeout(() => {
       setIsLoading(false)
+      login({
+        fullName: formData.name.trim() || formData.email.split('@')[0],
+        firstName: formData.name.trim() ? formData.name.trim().split(' ')[0] : formData.email.split('@')[0],
+        primaryEmailAddress: { emailAddress: formData.email },
+      })
       if (isRegister) {
         toast.success('Account created successfully! Welcome aboard.')
       } else {
