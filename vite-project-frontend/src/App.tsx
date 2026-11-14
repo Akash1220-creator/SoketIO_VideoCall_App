@@ -2,7 +2,7 @@ import { Toaster } from "react-hot-toast"
 import { Login } from "./pages/Login"
 import ProtectedRoute from "./components/ProtectedRoutes"
 import Protectedlayout from "./components/ProtectedLayout"
-import { Routes, Route, Navigate, NavigationType } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Dashboard from "./pages/Dashboard"
 import Session from "./pages/Session"
 import Pricing from "./pages/Pricing"
