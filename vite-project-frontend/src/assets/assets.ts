@@ -1,4 +1,4 @@
-import type { DummyUser, DummyStats, DummySession } from '../types';
+import type { DummyUser, DummyStats, DummySession, DummyMeetingDetails, DummyRemoteParticipant, DummyChatMessage } from '../types';
 
 export const dummyUser: DummyUser = {
   id: "user_mock_001",
@@ -41,5 +41,62 @@ export const dummySessions: DummySession[] = [
         leftAt: "2026-08-14T10:45:00.000Z",
       },
     ],
+  },
+];
+
+export const dummyMeetingDetails: DummyMeetingDetails = {
+  id: 101,
+  meetingId: "abc-def-ghi",
+  title: "Instant Meeting",
+  status: "active",
+  createdAt: new Date().toISOString(),
+  host: {
+    id: "user_mock_001",
+    name: "Alex Rivera",
+    email: "alex.rivera@example.com",
+  },
+};
+
+export const dummyRemoteParticipants: DummyRemoteParticipant[] = [
+  {
+    socketId: "socket_sarah_002",
+    userId: "user_mock_002",
+    userName: "Sarah Chen",
+    stream: null,
+    audioEnabled: true,
+    videoEnabled: true,
+  },
+  {
+    socketId: "socket_marcus_003",
+    userId: "user_mock_003",
+    userName: "Marcus Vance",
+    stream: null,
+    audioEnabled: false,
+    videoEnabled: true,
+  },
+  {
+    socketId: "socket_elena_004",
+    userId: "user_mock_004",
+    userName: "Elena Rostova",
+    stream: null,
+    audioEnabled: true,
+    videoEnabled: false,
+  },
+];
+
+export const dummyInitialChatMessages: DummyChatMessage[] = [
+  {
+    id: "chat_01",
+    senderId: "user_mock_002",
+    senderName: "Sarah Chen",
+    text: "Hey Alex! Can you hear me clearly?",
+    time: "02:15 PM",
+  },
+  {
+    id: "chat_02",
+    senderId: "user_mock_003",
+    senderName: "Marcus Vance",
+    text: "Loud and clear! Ready for the walkthrough.",
+    time: "02:16 PM",
   },
 ];

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState } from 'react'
 import type { ReactNode } from 'react'
 import { dummyUser } from '../assets/assets'
 import type { DummyUser } from '../types'
@@ -9,54 +9,24 @@ interface AuthContextType {
   login: (userData?: Partial<DummyUser>) => void
   logout: () => void
 }
-
+//AuthContext is a class created by createContext() method for using useContext() hook to all over the application  
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
-
-const STORAGE_KEY = 'meetup_auth_user'
-
+//AuthProvider is a component that provides the authentication context to its children
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<DummyUser | null>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY)
-      if (saved) return JSON.parse(saved)
-    } catch {
-      // ignore
-    }
-    // Default to dummyUser so existing flow works smoothly
-    return dummyUser
-  })
-
-  const isSignedIn = !!user
-
-  useEffect(() => {
-    try {
-      if (user) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(user))
-      } else {
-        localStorage.removeItem(STORAGE_KEY)
-      }
-    } catch {
-      // ignore
-    }
-  }, [user])
-
+  const [user, setUser] = useState<DummyUser | null>(dummyUser)
+  //login is a function that updates the user state by using setUser() method 
   const login = (userData?: Partial<DummyUser>) => {
-    const updatedUser: DummyUser = {
-      ...dummyUser,
-      ...userData,
-      primaryEmailAddress: {
-        emailAddress: userData?.primaryEmailAddress?.emailAddress || dummyUser.primaryEmailAddress.emailAddress,
-      },
+    if (userData) {
+      setUser({ ...dummyUser, ...userData })
+    } else {
+      setUser(dummyUser)
     }
-    setUser(updatedUser)
   }
-
-  const logout = () => {
-    setUser(null)
-  }
-
+  //logout is a function that updates the user state by using setUser() method 
+  const logout = () => setUser(null)
+//
   return (
-    <AuthContext.Provider value={{ user, isSignedIn, login, logout }}>
+    <AuthContext.Provider value={{ user, isSignedIn: !!user, login, logout }}>
       {children}
     </AuthContext.Provider>
   )
@@ -64,8 +34,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider')
-  }
+  if (!context) throw new Error('useAuth must be used within an AuthProvider')
   return context
 }
