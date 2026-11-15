@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboardIcon,
@@ -8,29 +8,22 @@ import {
   ChevronDown,
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import { useClickOutside } from '../hooks'
 import toast from 'react-hot-toast'
 
 interface UserButtonProps {
   afterSignOutUrl?: string
 }
 
-// Custom Profile Dropdown (Replaces Clerk's UserButton seamlessly)
+// Custom Profile Dropdown helper component that will be used in the navbar 
 export const UserButton = ({ afterSignOutUrl = '/login' }: UserButtonProps) => {
   const { user, logout } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
 
-  // Close dropdown on click outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+  // Close dropdown on click outside using custom hook
+  useClickOutside(dropdownRef, () => setIsOpen(false))
 
   const handleSignOut = () => {
     logout()
@@ -69,7 +62,7 @@ export const UserButton = ({ afterSignOutUrl = '/login' }: UserButtonProps) => {
         />
       </button>
 
-      {/* Floating Dropdown Card */}
+      {/* User Profile Dropdown Card */}
       {isOpen && (
         <div className="absolute right-0 mt-2.5 w-64 bg-white rounded-2xl shadow-xl border border-slate-100 p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
           {/* User Profile Header */}
