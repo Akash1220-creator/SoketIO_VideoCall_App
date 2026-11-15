@@ -1,31 +1,41 @@
-export interface SessionHost {
-  id: string;
-  name: string;
-  email: string;
-}
 
-export interface SessionParticipantUser {
-  id: string;
-  email: string;
+export interface SessionHost {
+  id: string
+  name: string
+  email: string
 }
 
 export interface SessionParticipant {
-  user: SessionParticipantUser;
-  name: string;
-  joinedAt: string;
-  leftAt: string;
+  user: { id: string; email: string }
+  name: string
+  joinedAt: string
+  leftAt: string | null // null while the participant is still in the meeting
+}
+
+export interface SessionMessage {
+  id: string
+  senderId: string
+  senderName: string
+  text: string
+  timestamp: string
 }
 
 export interface DummySession {
-  id: number;
-  meetingId: string;
-  title: string;
-  status: string;
-  createdAt: string;
-  endedAt: string;
-  host: SessionHost;
-  participants: SessionParticipant[];
+  id: number
+  meetingId: string
+  title: string
+  status: string
+  createdAt: string
+  endedAt: string | null
+  host: SessionHost
+  participants: SessionParticipant[]
+  messages: SessionMessage[]
 }
+
+
+
+
+
 
 export interface DummyMeetingDetails {
   id: number;

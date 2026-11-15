@@ -4,7 +4,7 @@ import ProtectedRoute from "./components/ProtectedRoutes"
 import Protectedlayout from "./components/ProtectedLayout"
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Dashboard from "./pages/Dashboard"
-import Session from "./pages/Session"
+import Session from "./pages/Sessions"
 import Pricing from "./pages/Pricing"
 import MeetingRoom from "./pages/MeetingRoom"
 
